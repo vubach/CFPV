@@ -28,13 +28,13 @@ jobs:
         run: |
           curl -sL -o /tmp/flutter.tar.xz \
             "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${{ env.FLUTTER_VERSION }}-stable.tar.xz"
-          tar xf /tmp/flutter.tar.xz -C /opt
-          echo "/opt/flutter/bin" >> $GITHUB_PATH
+          tar xf /tmp/flutter.tar.xz -C /home/runner
+          echo "/home/runner/flutter/bin" >> $GITHUB_PATH
 
       - name: Cache Flutter SDK
         uses: actions/cache@v4
         with:
-          path: /opt/flutter
+          path: /home/runner/flutter
           key: flutter-sdk-${{ env.FLUTTER_VERSION }}
 
       - name: Preload Dart cache
