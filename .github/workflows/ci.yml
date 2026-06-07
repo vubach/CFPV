@@ -41,7 +41,12 @@ jobs:
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Test (if any)
-        run: flutter test
+        run: |
+          if [ -d "test" ]; then
+            flutter test
+          else
+            echo "No test directory found, skipping Flutter tests"
+          fi
 
   # ── Backend Unit Tests ──────────────────────────────
   backend-unit:
