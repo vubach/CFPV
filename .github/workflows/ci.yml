@@ -24,12 +24,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Download Flutter SDK
+        run: |
+          curl -sL -o /tmp/flutter.tar.xz \
+            "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${{ env.FLUTTER_VERSION }}-stable.tar.xz"
+          tar xf /tmp/flutter.tar.xz -C /opt
+          echo "/opt/flutter/bin" >> $GITHUB_PATH
+
+      - name: Cache Flutter SDK
+        uses: actions/cache@v4
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
-          cache: true
+          path: /opt/flutter
+          key: flutter-sdk-${{ env.FLUTTER_VERSION }}
+
+      - name: Preload Dart cache
+        run: |
+          flutter config --no-analytics 2>/dev/null || true
+          flutter precache 2>/dev/null || true
 
       - name: Check Flutter version
         run: flutter --version
