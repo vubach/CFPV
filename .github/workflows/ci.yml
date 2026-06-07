@@ -14,14 +14,11 @@ env:
   NODE_VERSION: '20'
   FLUTTER_VERSION: '3.27.4'
 
-# ─────────────────────────────────────────────────────
-# Jobs
-# ─────────────────────────────────────────────────────
 jobs:
   # ── Flutter ──────────────────────────────────────────
   flutter-analyze:
     name: Flutter Analyze
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -32,7 +29,6 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
-          cache: true
 
       - name: Check Flutter version
         run: flutter --version
