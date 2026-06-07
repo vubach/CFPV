@@ -14,11 +14,11 @@ void main() {
         ),
       );
 
-      // LoadingDots creates 3 circular dot containers (8x8, circle shape)
+      // LoadingDots creates 3 circular dot containers (8px, horizontal: 4 margin, circle)
       final dots = find.byWidgetPredicate(
         (w) =>
             w is Container &&
-            w.constraints?.maxWidth == 8 &&
+            w.margin == const EdgeInsets.symmetric(horizontal: 4) &&
             w.decoration is BoxDecoration &&
             (w.decoration as BoxDecoration).shape == BoxShape.circle,
       );
@@ -40,7 +40,7 @@ void main() {
       final dots = find.byWidgetPredicate(
         (w) =>
             w is Container &&
-            w.constraints?.maxWidth == 8 &&
+            w.margin == const EdgeInsets.symmetric(horizontal: 4) &&
             w.decoration is BoxDecoration &&
             (w.decoration as BoxDecoration).color == customColor,
       );
