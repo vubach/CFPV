@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import '../services/token_service.dart';
-import '../constants/api_constants.dart';
 
 /// Injects JWT access token into requests and handles 401 refresh flow.
 class AuthInterceptor extends Interceptor {

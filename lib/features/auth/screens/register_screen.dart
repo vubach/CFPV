@@ -108,7 +108,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             children: [
               const SizedBox(height: CFPVSpacing.space3),
               Text('Create Account',
-                  style: CFPVTypography.h1Green),
+                  style: CFPVTypography.h1Green,),
               const SizedBox(height: 4),
               Text(
                 'Join the CFPV family',
@@ -131,7 +131,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   prefix: const Padding(
                     padding: EdgeInsets.only(right: 8),
                     child: Text('+84',
-                        style: CFPVTypography.small),
+                        style: CFPVTypography.small,),
                   ),
                 ),
                 const SizedBox(height: CFPVSpacing.space3),
@@ -170,9 +170,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?",
+                  Text('Already have an account?',
                       style: CFPVTypography.body
-                          .copyWith(color: CFPVColors.textBlackSoft)),
+                          .copyWith(color: CFPVColors.textBlackSoft),),
                   TextButton(
                     onPressed: () => context.go(RoutePaths.login),
                     child: const Text('Sign in'),

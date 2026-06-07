@@ -7,6 +7,7 @@ import '../../../shared/theme/colors.dart';
 import '../../../shared/theme/typography.dart';
 import '../../../core/router/route_paths.dart';
 import '../../../shared/widgets/feedback/loading_dots.dart';
+import '../../../shared/widgets/app_logo.dart';
 
 /// Brand loading screen. Auto-navigates based on auth state.
 /// Design: specs/design-phase.md §3.1
@@ -41,31 +42,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Brand logo placeholder
-              Container(
-                width: 120,
-                height: 120,
-                decoration: const BoxDecoration(
-                  color: CFPVColors.starbucksGreen,
-                  shape: BoxShape.circle,
-                ),
-                child: const Center(
-                  child: Text(
-                    'CFPV',
-                    style: TextStyle(
-                      color: CFPVColors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'CFPV',
-                style: CFPVTypography.h1,
-              ),
+              const AppLogo(size: 120, fontSize: 28),
               const SizedBox(height: 4),
               Text(
                 'Coffee & Tea',

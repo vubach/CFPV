@@ -3,6 +3,7 @@ export class UserResponseDto {
   fullName: string;
   phone: string;
   email?: string;
+  avatarUrl?: string;
   role: string;
   isActive: boolean;
   createdAt: Date;

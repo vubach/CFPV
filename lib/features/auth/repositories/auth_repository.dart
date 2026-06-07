@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import '../../../core/network/dio_client.dart';
 import '../../../core/constants/api_constants.dart';
 import '../../../core/constants/app_constants.dart';
@@ -26,7 +25,7 @@ class AuthRepository {
     final response = await _dio.post(
       ApiConstants.register,
       data: {
-        'full_name': fullName,
+        'fullName': fullName,
         'phone': phone,
         if (email != null) 'email': email,
         'password': password,
@@ -76,7 +75,7 @@ class AuthRepository {
       if (refreshToken != null) {
         await _dio.post(ApiConstants.logout, data: {
           'refreshToken': refreshToken,
-        });
+        },);
       }
     } catch (_) {
       // Ignore network errors on logout — just clear local state
@@ -115,12 +114,51 @@ class AuthRepository {
     return response.data as Map<String, dynamic>;
   }
 
+  /// Update the current user's profile (name, email, phone).
+  Future<Map<String, dynamic>> updateProfile({
+    required String fullName,
+    String? email,
+    String? phone,
+  }) async {
+    final response = await _dio.patch(
+      ApiConstants.usersMe,
+      data: {
+        'fullName': fullName,
+        if (email != null) 'email': email,
+        if (phone != null) 'phone': phone,
+      },
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  /// Change the current user's password.
+  Future<Map<String, dynamic>> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    final response = await _dio.patch(
+      ApiConstants.usersMePassword,
+      data: {
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+      },
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
   // ── Private Helpers ──────────────────────────────
 
   Future<void> _saveTokens(Map<String, dynamic> data) async {
-    final tokens = data['tokens'] as Map<String, dynamic>;
-    final accessToken = tokens['accessToken'] as String;
-    final refreshToken = tokens['refreshToken'] as String;
+    String accessToken;
+    String refreshToken;
+    if (data.containsKey('tokens')) {
+      final tokens = data['tokens'] as Map<String, dynamic>;
+      accessToken = tokens['accessToken'] as String;
+      refreshToken = tokens['refreshToken'] as String;
+    } else {
+      accessToken = data['accessToken'] as String;
+      refreshToken = data['refreshToken'] as String;
+    }
     await _tokenService.setTokens(accessToken, refreshToken);
   }
 

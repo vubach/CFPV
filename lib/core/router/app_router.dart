@@ -10,7 +10,17 @@ import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/auth/screens/forgot_password_screen.dart';
-import '../../features/home/screens/home_stub_screen.dart';
+import '../../features/home/screens/home_screen.dart';
+import '../../features/menu/presentation/pages/menu_list_page.dart';
+import '../../features/menu/presentation/pages/product_detail_page.dart';
+import '../../features/cart/presentation/pages/cart_page.dart';
+import '../../features/checkout/presentation/pages/checkout_page.dart';
+import '../../features/orders/presentation/pages/order_detail_page.dart';
+import '../../features/orders/presentation/pages/orders_list_page.dart';
+import '../../features/profile/presentation/pages/change_password_page.dart';
+import '../../features/profile/presentation/pages/edit_profile_page.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/rewards/presentation/pages/rewards_page.dart';
 import '../../shared/widgets/navigation/cfpv_tab_bar.dart';
 
 /// Provider for the GoRouter instance.
@@ -46,6 +56,13 @@ class AppRouter {
           builder: (_, __) => const OnboardingScreen(),
         ),
 
+        // ── Checkout ────────────────────────
+        GoRoute(
+          path: RoutePaths.checkout,
+          name: 'checkout',
+          builder: (_, __) => const CheckoutPage(),
+        ),
+
         // ── Auth Routes ───────────────────────
         GoRoute(
           path: RoutePaths.login,
@@ -72,43 +89,66 @@ class AppRouter {
             GoRoute(
               path: RoutePaths.home,
               name: 'home',
-              builder: (_, __) => const HomeStubScreen(),
+              builder: (_, __) => const HomeScreen(),
             ),
             GoRoute(
               path: RoutePaths.menu,
               name: 'menu',
-              pageBuilder: (_, __) => NoTransitionPage(
-                child: const Scaffold(
-                  body: Center(child: Text('Menu — Coming in Sprint 2')),
-                ),
+              pageBuilder: (_, __) => const NoTransitionPage(
+                child: MenuListPage(),
               ),
+            ),
+            GoRoute(
+              path: RoutePaths.menuProduct,
+              name: 'menuProduct',
+              builder: (_, state) {
+                final productId = state.pathParameters['productId']!;
+                return ProductDetailPage(productId: productId);
+              },
             ),
             GoRoute(
               path: RoutePaths.cart,
               name: 'cart',
-              pageBuilder: (_, __) => NoTransitionPage(
-                child: const Scaffold(
-                  body: Center(child: Text('Cart — Coming in Sprint 3')),
-                ),
+              pageBuilder: (_, __) => const NoTransitionPage(
+                child: CartPage(),
               ),
             ),
             GoRoute(
               path: RoutePaths.rewards,
               name: 'rewards',
-              pageBuilder: (_, __) => NoTransitionPage(
-                child: const Scaffold(
-                  body: Center(child: Text('Rewards — Coming in Sprint 5')),
-                ),
+              pageBuilder: (_, __) => const NoTransitionPage(
+                child: RewardsPage(),
               ),
             ),
             GoRoute(
               path: RoutePaths.profile,
               name: 'profile',
-              pageBuilder: (_, __) => NoTransitionPage(
-                child: const Scaffold(
-                  body: Center(child: Text('Profile — Coming in Sprint 6')),
-                ),
+              pageBuilder: (_, __) => const NoTransitionPage(
+                child: ProfilePage(),
               ),
+            ),
+            GoRoute(
+              path: RoutePaths.profileOrders,
+              name: 'profileOrders',
+              builder: (_, __) => const OrdersListPage(),
+            ),
+            GoRoute(
+              path: RoutePaths.profileEdit,
+              name: 'profileEdit',
+              builder: (_, __) => const EditProfilePage(),
+            ),
+            GoRoute(
+              path: RoutePaths.profileChangePassword,
+              name: 'profileChangePassword',
+              builder: (_, __) => const ChangePasswordPage(),
+            ),
+            GoRoute(
+              path: RoutePaths.profileOrderDetail,
+              name: 'profileOrderDetail',
+              builder: (_, state) {
+                final orderId = state.pathParameters['orderId']!;
+                return OrderDetailPage(orderId: orderId);
+              },
             ),
           ],
         ),

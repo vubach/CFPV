@@ -10,6 +10,7 @@ import '../../../shared/theme/spacing.dart';
 import '../../../shared/widgets/buttons/primary_pill_button.dart';
 import '../../../shared/widgets/inputs/floating_label_input.dart';
 import '../../../shared/widgets/inputs/password_input.dart';
+import '../../../shared/widgets/app_logo.dart';
 import '../../../core/router/route_paths.dart';
 
 /// Login screen — phone/email + password authentication.
@@ -71,31 +72,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: CFPVSpacing.space7),
-                // Logo
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: const BoxDecoration(
-                    color: CFPVColors.starbucksGreen,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Text('CFPV',
-                        style: TextStyle(
-                            color: CFPVColors.white,
-                            fontWeight: FontWeight.w700)),
-                  ),
-                ),
+                const SizedBox(height: CFPVSpacing.space6),
+                const AppLogo(size: 72, fontSize: 22),
                 const SizedBox(height: CFPVSpacing.space5),
                 // Heading
                 Text('Welcome Back',
-                    style: CFPVTypography.h1Green),
+                    style: CFPVTypography.h1Green,),
                 const SizedBox(height: 4),
                 Text(
                   'Sign in to your account',
                   style: CFPVTypography.body.copyWith(
-                      color: CFPVColors.textBlackSoft),
+                      color: CFPVColors.textBlackSoft,),
                 ),
                 const SizedBox(height: CFPVSpacing.space5),
                 // Login input
@@ -143,7 +130,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     Text("Don't have an account?",
                         style: CFPVTypography.body
-                            .copyWith(color: CFPVColors.textBlackSoft)),
+                            .copyWith(color: CFPVColors.textBlackSoft),),
                     TextButton(
                       onPressed: () => context.go(RoutePaths.register),
                       child: const Text('Create one'),

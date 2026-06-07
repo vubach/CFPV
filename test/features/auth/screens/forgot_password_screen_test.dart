@@ -36,7 +36,7 @@ void main() {
   }
 
   /// Helper to find the Reset Password button (not the heading).
-  Finder _resetPasswordButton() =>
+  Finder resetPasswordButton() =>
       find.widgetWithText(PrimaryPillButton, 'Reset Password');
 
   /// Helper to fill password fields in the OTP step.
@@ -93,7 +93,7 @@ void main() {
       expect(find.text('Enter verification code'), findsOneWidget);
       expect(find.text('New password'), findsOneWidget);
       expect(find.text('Confirm new password'), findsOneWidget);
-      expect(_resetPasswordButton(), findsOneWidget);
+      expect(resetPasswordButton(), findsOneWidget);
     });
 
     testWidgets('shows loading indicator during OTP send', (tester) async {
@@ -136,13 +136,13 @@ void main() {
 
       // Fill in matching passwords
       await fillPasswordFields(tester,
-          newPassword: 'newpassword123', confirmPassword: 'newpassword123');
+          newPassword: 'newpassword123', confirmPassword: 'newpassword123',);
       await tester.pump();
 
       // Ensure Reset Password button is visible, then tap
-      await tester.ensureVisible(_resetPasswordButton());
+      await tester.ensureVisible(resetPasswordButton());
       await tester.pump();
-      await tester.tap(_resetPasswordButton());
+      await tester.tap(resetPasswordButton());
       await tester.pumpAndSettle();
 
       // Success screen
@@ -164,12 +164,12 @@ void main() {
       await tester.pump();
 
       await fillPasswordFields(tester,
-          newPassword: 'newpass123', confirmPassword: 'newpass123');
+          newPassword: 'newpass123', confirmPassword: 'newpass123',);
       await tester.pump();
 
-      await tester.ensureVisible(_resetPasswordButton());
+      await tester.ensureVisible(resetPasswordButton());
       await tester.pump();
-      await tester.tap(_resetPasswordButton());
+      await tester.tap(resetPasswordButton());
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Back to Sign In'));
@@ -188,12 +188,12 @@ void main() {
       await tester.pump();
 
       await fillPasswordFields(tester,
-          newPassword: 'password123', confirmPassword: 'differentpass');
+          newPassword: 'password123', confirmPassword: 'differentpass',);
       await tester.pump();
 
-      await tester.ensureVisible(_resetPasswordButton());
+      await tester.ensureVisible(resetPasswordButton());
       await tester.pump();
-      await tester.tap(_resetPasswordButton());
+      await tester.tap(resetPasswordButton());
       await tester.pumpAndSettle();
 
       expect(find.text('Passwords do not match'), findsOneWidget);
@@ -211,12 +211,12 @@ void main() {
       await tester.pump();
 
       await fillPasswordFields(tester,
-          newPassword: 'short', confirmPassword: 'short');
+          newPassword: 'short', confirmPassword: 'short',);
       await tester.pump();
 
-      await tester.ensureVisible(_resetPasswordButton());
+      await tester.ensureVisible(resetPasswordButton());
       await tester.pump();
-      await tester.tap(_resetPasswordButton());
+      await tester.tap(resetPasswordButton());
       await tester.pumpAndSettle();
 
       expect(

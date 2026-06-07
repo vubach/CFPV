@@ -53,10 +53,10 @@ class _OTPVerificationState extends ConsumerState<OTPVerification> {
       child: Column(
         children: [
           const Icon(Icons.sms_outlined,
-              size: 48, color: CFPVColors.greenAccent),
+              size: 48, color: CFPVColors.greenAccent,),
           const SizedBox(height: CFPVSpacing.space3),
           Text('Enter verification code',
-              style: CFPVTypography.h1Green),
+              style: CFPVTypography.h1Green,),
           const SizedBox(height: CFPVSpacing.space2),
           Text(
             'Sent to ${widget.phoneNumber}',

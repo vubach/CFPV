@@ -29,11 +29,11 @@ class HomeAppBar extends StatelessWidget {
       child: Row(
         children: [
           // Menu / profile avatar
-          CircleAvatar(
+          const CircleAvatar(
             radius: 18,
             backgroundColor: CFPVColors.neutralCool,
             child: Icon(Icons.person_outline,
-                size: 20, color: CFPVColors.textBlackSoft),
+                size: 20, color: CFPVColors.textBlackSoft,),
           ),
           const SizedBox(width: 12),
           // Greeting + subtitle
@@ -61,15 +61,15 @@ class HomeAppBar extends StatelessWidget {
           ),
           // Points icon
           if (pointsBalance != null) ...[
-            Icon(Icons.star,
-                color: CFPVColors.gold, size: 20),
+            const Icon(Icons.star,
+                color: CFPVColors.gold, size: 20,),
             const SizedBox(width: 12),
           ],
           // Cart icon with badge
           Stack(
             children: [
-              Icon(Icons.shopping_bag_outlined,
-                  color: CFPVColors.textBlackSoft, size: 24),
+              const Icon(Icons.shopping_bag_outlined,
+                  color: CFPVColors.textBlackSoft, size: 24,),
               if (cartItemCount != null && cartItemCount! > 0)
                 Positioned(
                   top: -2,
@@ -81,7 +81,7 @@ class HomeAppBar extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     constraints: const BoxConstraints(
-                        minWidth: 16, minHeight: 16),
+                        minWidth: 16, minHeight: 16,),
                     child: Text(
                       cartItemCount! > 9 ? '9+' : '$cartItemCount',
                       style: const TextStyle(

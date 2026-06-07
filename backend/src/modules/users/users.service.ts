@@ -69,12 +69,25 @@ export class UsersService {
     await this.userRepo.update(userId, { passwordHash });
   }
 
+  async updateProfile(userId: string, data: { fullName?: string; email?: string; avatarUrl?: string }): Promise<UserResponseDto> {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
+
+    if (data.fullName !== undefined) user.fullName = data.fullName;
+    if (data.email !== undefined) user.email = data.email;
+    if (data.avatarUrl !== undefined) user.avatarUrl = data.avatarUrl;
+
+    const saved = await this.userRepo.save(user);
+    return this.toResponse(saved);
+  }
+
   toResponse(user: User): UserResponseDto {
     return new UserResponseDto({
       id: user.id,
       fullName: user.fullName,
       phone: user.phone,
       email: user.email,
+      avatarUrl: user.avatarUrl,
       role: user.role,
       isActive: user.isActive,
       createdAt: user.createdAt,

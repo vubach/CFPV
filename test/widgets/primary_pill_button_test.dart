@@ -83,7 +83,7 @@ void main() {
       bool tapped = false;
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: PrimaryPillButton(
               label: 'Disabled',
@@ -137,7 +137,7 @@ void main() {
 
       // Verify the button uses the green accent background
       final backgroundColor =
-          style?.backgroundColor?.resolve(<MaterialState>{});
+          style?.backgroundColor?.resolve(<WidgetState>{});
       expect(backgroundColor, const Color(0xFF00754A));
     });
   });

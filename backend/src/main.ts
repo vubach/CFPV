@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe, Logger } from '@nestjs/common';
+import { join } from 'path';
 import { AppModule } from './app.module';
-import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const logger = new Logger('Bootstrap');
 
   // ── Global Prefix ──────────────────────────────
@@ -29,8 +30,8 @@ async function bootstrap() {
     }),
   );
 
-  // ── Global Interceptors ────────────────────────
-  app.useGlobalInterceptors(new ResponseInterceptor());
+  // ── Static Files ─────────────────────────────
+  app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads' });
 
   // ── Graceful Shutdown ──────────────────────────
   app.enableShutdownHooks();

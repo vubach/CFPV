@@ -50,8 +50,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Future<void> _onGetStarted() async {
-    final storage = SecureStorageService();
-    await storage.markOnboardingSeen();
+    try {
+      final storage = SecureStorageService();
+      await storage.markOnboardingSeen();
+    } catch (_) {
+      // Storage errors are non-fatal — proceed with navigation
+    }
     if (mounted) context.go(RoutePaths.login);
   }
 

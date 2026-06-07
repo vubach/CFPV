@@ -111,10 +111,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.check_circle,
-                    size: 64, color: CFPVColors.greenAccent),
+                    size: 64, color: CFPVColors.greenAccent,),
                 const SizedBox(height: CFPVSpacing.space4),
                 Text('Password Reset',
-                    style: CFPVTypography.h1Green),
+                    style: CFPVTypography.h1Green,),
                 const SizedBox(height: CFPVSpacing.space2),
                 Text(
                   'Your password has been updated successfully.',
@@ -150,7 +150,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           children: [
             const SizedBox(height: CFPVSpacing.space4),
             Text('Reset Password',
-                style: CFPVTypography.h1Green),
+                style: CFPVTypography.h1Green,),
             const SizedBox(height: 4),
             Text(
               "We'll send you a reset code",

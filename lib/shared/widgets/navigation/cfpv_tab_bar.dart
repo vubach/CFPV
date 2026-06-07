@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../features/cart/provider/cart_provider.dart';
 import '../../../shared/theme/colors.dart';
-import '../../../shared/theme/typography.dart';
 
 /// Tab definitions for the CFPV bottom navigation.
 enum CFPVTab {
@@ -84,7 +85,6 @@ class CFPVTabBar extends StatelessWidget {
                               Text(
                                 tab.label,
                                 style: TextStyle(
-                                  fontFamily: 'SoDoSans',
                                   fontSize: 11,
                                   fontWeight: FontWeight.w400,
                                   color: isActive
@@ -171,14 +171,20 @@ class _CFPVTabShellState extends State<CFPVTabShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: CFPVTabBar(
-        currentIndex: _currentIndex,
-        cartBadgeCount: 0,
-        onTap: (index) {
-          setState(() => _currentIndex = index);
-          final route = CFPVTab.values[index];
-          final path = '/${route.name}';
-          context.go(path);
+      bottomNavigationBar: Consumer(
+        builder: (context, ref, _) {
+          final cartState = ref.watch(cartProvider);
+          final itemCount = cartState.cart?.itemCount ?? 0;
+          return CFPVTabBar(
+            currentIndex: _currentIndex,
+            cartBadgeCount: itemCount > 0 ? itemCount : null,
+            onTap: (index) {
+              setState(() => _currentIndex = index);
+              final route = CFPVTab.values[index];
+              final path = '/${route.name}';
+              context.go(path);
+            },
+          );
         },
       ),
     );

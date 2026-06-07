@@ -4,6 +4,8 @@ import '../repositories/auth_repository.dart';
 import '../../../core/network/dio_client.dart';
 import '../../../core/services/token_service.dart';
 import '../../../core/services/secure_storage_service.dart';
+import '../../profile/repositories/profile_repository.dart';
+import '../../../services/notifications/fcm_service.dart';
 
 /// Auth provider for login/register/logout flows.
 class AuthNotifier extends StateNotifier<AuthState> {
@@ -42,11 +44,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       state = AuthStateAuthenticated(
         userId: user['id'] as String,
-        fullName: user['full_name'] as String,
+        fullName: (user['fullName'] ?? user['full_name']) as String,
         phone: user['phone'] as String,
         email: user['email'] as String?,
         avatarUrl: user['avatarUrl'] as String?,
       );
+      _registerDeviceToken();
     } catch (e) {
       state = AuthStateError(message: e.toString());
     }
@@ -86,10 +89,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       state = AuthStateAuthenticated(
         userId: user['id'] as String,
-        fullName: user['full_name'] as String,
+        fullName: (user['fullName'] ?? user['full_name']) as String,
         phone: user['phone'] as String,
         email: user['email'] as String?,
       );
+      _registerDeviceToken();
     } catch (e) {
       state = AuthStateError(message: e.toString());
     }
@@ -120,6 +124,91 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = const AuthStateInitial();
     } catch (e) {
       state = AuthStateError(message: e.toString());
+    }
+  }
+
+  /// Change the current user's password.
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    state = const AuthStateLoading();
+    try {
+      await _repository.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      );
+      // Success — revert to the current authenticated state
+      final current = state;
+      if (current is AuthStateAuthenticated) {
+        state = AuthStateAuthenticated(
+          userId: current.userId,
+          fullName: current.fullName,
+          phone: current.phone,
+          email: current.email,
+          avatarUrl: current.avatarUrl,
+        );
+      }
+    } catch (e) {
+      state = AuthStateError(message: e.toString());
+    }
+  }
+
+  /// Update the current user's profile (name, email, phone).
+  Future<void> updateProfile({
+    required String fullName,
+    String? email,
+    String? phone,
+  }) async {
+    state = const AuthStateLoading();
+    try {
+      await _repository.updateProfile(
+        fullName: fullName,
+        email: email,
+        phone: phone,
+      );
+      // Update the authenticated state with new values
+      final current = state;
+      if (current is AuthStateAuthenticated) {
+        state = AuthStateAuthenticated(
+          userId: current.userId,
+          fullName: fullName,
+          phone: phone ?? current.phone,
+          email: email ?? current.email,
+          avatarUrl: current.avatarUrl,
+        );
+      }
+    } catch (e) {
+      state = AuthStateError(message: e.toString());
+    }
+  }
+
+  /// Upload and update the user's avatar image.
+  Future<void> updateAvatar(String filePath) async {
+    try {
+      final repo = ProfileRepository(dioClient: DioClient.instance);
+      final avatarUrl = await repo.uploadAvatar(filePath);
+      final current = state;
+      if (avatarUrl != null && current is AuthStateAuthenticated) {
+        state = AuthStateAuthenticated(
+          userId: current.userId,
+          fullName: current.fullName,
+          phone: current.phone,
+          email: current.email,
+          avatarUrl: avatarUrl,
+        );
+      }
+    } catch (e) {
+      state = AuthStateError(message: e.toString());
+    }
+  }
+
+  void _registerDeviceToken() {
+    try {
+      final fcm = FcmService(dioClient: DioClient.instance);
+      fcm.registerDeviceToken();
+    } catch (_) {
+      // Non-blocking: FCM registration failure shouldn't affect auth
     }
   }
 

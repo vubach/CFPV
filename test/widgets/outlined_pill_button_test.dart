@@ -43,7 +43,7 @@ void main() {
       bool tapped = false;
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: OutlinedPillButton(
               label: 'Disabled',
@@ -79,11 +79,11 @@ void main() {
 
       // Verify custom foreground color
       final foregroundColor =
-          style?.foregroundColor?.resolve(<MaterialState>{});
+          style?.foregroundColor?.resolve(<WidgetState>{});
       expect(foregroundColor, customColor);
 
       // Verify custom border color
-      final side = style?.side?.resolve(<MaterialState>{});
+      final side = style?.side?.resolve(<WidgetState>{});
       expect(side?.color, customColor);
     });
 

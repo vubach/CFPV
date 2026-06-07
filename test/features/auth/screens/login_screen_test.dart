@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import 'package:cfpv/features/auth/screens/login_screen.dart';
 import 'package:cfpv/features/auth/providers/auth_state.dart';
-import 'package:cfpv/shared/widgets/buttons/primary_pill_button.dart';
 import '../../../helpers/auth_test_helper.dart';
 
 void main() {

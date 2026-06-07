@@ -36,7 +36,7 @@ void main() {
   }
 
   /// Helper to find the Create Account button (not the heading).
-  Finder _createAccountButton() =>
+  Finder createAccountButton() =>
       find.widgetWithText(PrimaryPillButton, 'Create Account');
 
   group('RegisterScreen', () {
@@ -56,7 +56,7 @@ void main() {
       expect(find.text('Confirm password'), findsOneWidget);
 
       // Create Account button
-      expect(_createAccountButton(), findsOneWidget);
+      expect(createAccountButton(), findsOneWidget);
 
       // Sign in link
       expect(find.text('Already have an account?'), findsOneWidget);
@@ -86,7 +86,7 @@ void main() {
       await tester.enterText(textFields.at(4), 'securepass123');
       await tester.pumpAndSettle();
 
-      await tester.tap(_createAccountButton());
+      await tester.tap(createAccountButton());
       await tester.pumpAndSettle();
 
       expect(authNotifier.lastRegisterParams, isNotNull);
@@ -109,12 +109,12 @@ void main() {
       await tester.enterText(textFields.at(4), 'pass1234');
       await tester.pumpAndSettle();
 
-      await tester.tap(_createAccountButton());
+      await tester.tap(createAccountButton());
       await tester.pumpAndSettle();
 
       // The heading "Create Account" stays visible (above the conditional),
       // but the button disappears. Verify OTP view appears.
-      expect(_createAccountButton(), findsNothing);
+      expect(createAccountButton(), findsNothing);
       expect(find.text('Enter verification code'), findsOneWidget);
       expect(find.textContaining('Sent to'), findsOneWidget);
       expect(find.textContaining('0987654321'), findsOneWidget);
@@ -144,7 +144,7 @@ void main() {
       await tester.enterText(textFields.at(4), 'pass1234');
       await tester.pumpAndSettle();
 
-      await tester.tap(_createAccountButton());
+      await tester.tap(createAccountButton());
       await tester.pumpAndSettle();
 
       expect(authNotifier.lastRegisterParams!['email'], isNull);

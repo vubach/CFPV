@@ -39,6 +39,7 @@ class ApiConstants {
   // ── Orders ─────────────────────────────────────
   static const String orders = '/orders';
   static String orderById(String id) => '/orders/$id';
+  static String orderCancel(String id) => '/orders/$id/cancel';
   static String orderConfirmPayment(String id) => '/orders/$id/confirm-payment';
   static String orderReorder(String id) => '/orders/$id/reorder';
 

@@ -10,7 +10,7 @@ class CFPVTheme {
   CFPVTheme._();
 
   static ThemeData get light {
-    final colorScheme = ColorScheme.light(
+    const colorScheme = ColorScheme.light(
       primary: CFPVColors.greenAccent,
       secondary: CFPVColors.starbucksGreen,
       surface: CFPVColors.neutralWarm,

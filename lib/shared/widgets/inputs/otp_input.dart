@@ -87,7 +87,7 @@ class _OtpInputState extends State<OtpInput> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(widget.length, (index) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: CFPVSpacing.space2 / 2),
+              padding: const EdgeInsets.symmetric(horizontal: CFPVSpacing.space2 / 2),
               child: SizedBox(
                 width: 48,
                 height: 56,
@@ -97,7 +97,7 @@ class _OtpInputState extends State<OtpInput> {
                   onChanged: (v) => _onChanged(v, index),
                   onTap: () => _controllers[index].selection =
                       TextSelection.collapsed(
-                          offset: _controllers[index].text.length),
+                          offset: _controllers[index].text.length,),
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   maxLength: 1,

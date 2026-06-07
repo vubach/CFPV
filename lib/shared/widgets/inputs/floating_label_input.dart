@@ -125,7 +125,7 @@ class _FloatingLabelInputState extends State<FloatingLabelInput> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(CFPVRadius.input),
-              borderSide: BorderSide(color: CFPVColors.inputBorder),
+              borderSide: const BorderSide(color: CFPVColors.inputBorder),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(CFPVRadius.input),
