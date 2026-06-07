@@ -40,6 +40,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# ── Submodules / nested repos ───────────────────────
+agent-skills/
+
 # ── IDE ──────────────────────────────────────────────
 .idea/
 .vscode/
