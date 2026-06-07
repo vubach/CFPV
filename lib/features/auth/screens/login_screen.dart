@@ -101,7 +101,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // Login input
                 FloatingLabelInput(
                   label: 'Phone number or email',
-                  initialValue: '',
+                  controller: _loginController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'Required';
@@ -112,6 +112,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // Password input
                 PasswordInput(
                   label: 'Password',
+                  controller: _passwordController,
                   textInputAction: TextInputAction.done,
                   validator: (v) {
                     if (v == null || v.isEmpty) return 'Required';
@@ -134,7 +135,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   isLoading: isLoading,
                   onPressed: _onLogin,
                 ),
-                const Spacer(),
+                const SizedBox(height: CFPVSpacing.space5),
                 // Register link
                 const SizedBox(height: CFPVSpacing.space5),
                 Row(

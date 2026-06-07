@@ -6,6 +6,7 @@ import '../../theme/typography.dart';
 /// DESIGN.md §9.3: Floating Label Input variant
 class PasswordInput extends StatefulWidget {
   final String label;
+  final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final String? Function(String?)? validator;
   final TextInputAction? textInputAction;
@@ -13,6 +14,7 @@ class PasswordInput extends StatefulWidget {
   const PasswordInput({
     super.key,
     this.label = 'Password',
+    this.controller,
     this.onChanged,
     this.validator,
     this.textInputAction,
@@ -23,12 +25,27 @@ class PasswordInput extends StatefulWidget {
 }
 
 class _PasswordInputState extends State<PasswordInput> {
+  late final TextEditingController _effectiveController;
   bool _obscured = true;
 
   @override
+  void initState() {
+    super.initState();
+    _effectiveController = widget.controller ?? TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) _effectiveController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      controller: _effectiveController,
       onChanged: widget.onChanged,
+      validator: widget.validator,
       obscureText: _obscured,
       textInputAction: widget.textInputAction,
       style: CFPVTypography.body.copyWith(color: CFPVColors.textBlack),

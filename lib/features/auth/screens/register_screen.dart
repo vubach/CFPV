@@ -121,12 +121,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 // ── Registration Form ───────────
                 FloatingLabelInput(
                   label: 'Full name',
-                  initialValue: '',
+                  controller: _nameController,
                 ),
                 const SizedBox(height: CFPVSpacing.space3),
                 FloatingLabelInput(
                   label: 'Phone number',
-                  initialValue: '',
+                  controller: _phoneController,
                   keyboardType: TextInputType.phone,
                   prefix: const Padding(
                     padding: EdgeInsets.only(right: 8),
@@ -137,16 +137,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: CFPVSpacing.space3),
                 FloatingLabelInput(
                   label: 'Email (optional)',
-                  initialValue: '',
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: CFPVSpacing.space3),
                 PasswordInput(
                   label: 'Password',
+                  controller: _passwordController,
                 ),
                 const SizedBox(height: CFPVSpacing.space3),
                 PasswordInput(
                   label: 'Confirm password',
+                  controller: _confirmPasswordController,
                 ),
                 const SizedBox(height: CFPVSpacing.space5),
                 PrimaryPillButton.fullWidth(

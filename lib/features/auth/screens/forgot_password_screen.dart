@@ -162,7 +162,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             if (!_sentOtp) ...[
               FloatingLabelInput(
                 label: 'Phone number',
-                initialValue: '',
+                controller: _phoneController,
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: CFPVSpacing.space4),
@@ -180,10 +180,12 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               const SizedBox(height: CFPVSpacing.space4),
               PasswordInput(
                 label: 'New password',
+                controller: _passwordController,
               ),
               const SizedBox(height: CFPVSpacing.space3),
               PasswordInput(
                 label: 'Confirm new password',
+                controller: _confirmController,
               ),
               const SizedBox(height: CFPVSpacing.space4),
               PrimaryPillButton.fullWidth(
