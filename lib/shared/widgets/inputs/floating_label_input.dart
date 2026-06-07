@@ -58,15 +58,6 @@ class _FloatingLabelInputState extends State<FloatingLabelInput> {
   }
 
   @override
-  void didUpdateWidget(FloatingLabelInput oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.controller != null && widget.controller != _effectiveController) {
-      // External controller changed — update reference
-      _effectiveController.text = widget.controller!.text;
-    }
-  }
-
-  @override
   void dispose() {
     if (widget.controller == null) _effectiveController.dispose();
     _focusNode.removeListener(_onFocusChange);
@@ -80,13 +71,6 @@ class _FloatingLabelInputState extends State<FloatingLabelInput> {
 
   void _onChanged(String value) {
     widget.onChanged?.call(value);
-  }
-
-  /// Trigger validation and return the error message (null if valid).
-  String? validate() {
-    final error = widget.validator?.call(_effectiveController.text);
-    setState(() => _showError = error != null && error.isNotEmpty);
-    return error;
   }
 
   @override
