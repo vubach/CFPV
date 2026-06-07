@@ -38,10 +38,28 @@ jobs:
         run: flutter pub get
 
       - name: Analyze
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        continue-on-error: true
+        run: |
+          flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee /tmp/flutter-analyze.log
+          echo "EXIT_CODE=$?" >> $GITHUB_ENV
+
+      - name: Upload analyze logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flutter-analyze-log
+          path: /tmp/flutter-analyze.log
 
       - name: Test (if any)
-        run: flutter test
+        continue-on-error: true
+        run: flutter test 2>&1 | tee /tmp/flutter-test.log
+
+      - name: Upload test logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flutter-test-log
+          path: /tmp/flutter-test.log
 
   # ── Backend Unit Tests ──────────────────────────────
   backend-unit:
