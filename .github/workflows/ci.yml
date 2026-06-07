@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+  FLUTTER_VERSION: '3.27.x'
+
+# ─────────────────────────────────────────────────────
+# Jobs
+# ─────────────────────────────────────────────────────
+jobs:
+  # ── Flutter ──────────────────────────────────────────
+  flutter-analyze:
+    name: Flutter Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test (if any)
+        run: flutter test
+
+  # ── Backend Unit Tests ──────────────────────────────
+  backend-unit:
+    name: Backend Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm test
+
+  # ── Backend E2E Tests ───────────────────────────────
+  backend-e2e:
+    name: Backend E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: cfpv
+          POSTGRES_PASSWORD: cfpv_dev
+          POSTGRES_DB: cfpv_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+        env:
+          NODE_ENV: development
+          DATABASE_URL: postgresql://cfpv:cfpv_dev@localhost:5432/cfpv_dev
+
+  # ── Summary ─────────────────────────────────────────
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [flutter-analyze, backend-unit, backend-e2e]
+    steps:
+      - name: Check results
+        run: |
+          echo "## CFPV CI Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Flutter Analyze | ${{ needs.flutter-analyze.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Backend Unit Tests | ${{ needs.backend-unit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Backend E2E Tests | ${{ needs.backend-e2e.result }} |" >> $GITHUB_STEP_SUMMARY
